@@ -52,3 +52,30 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.opendb
+
+# Rider / JetBrains
+.idea/
+.Rider*/
+
+# OS junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Coverage / analysis
+*.coverage
+*.coveragexml
+*.dotCover
+*.sarif
+
+# Logs (extra)
+*.log
