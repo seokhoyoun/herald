@@ -11,5 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
   </ItemGroup>
 </Project>

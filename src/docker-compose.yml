@@ -1,0 +1,34 @@
+﻿version: "3.8"
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    # For local dev only; no auth for simplicity
+    command: ["--bind_ip_all"]
+
+  herald:
+    build:
+      context: ./
+      dockerfile: Herald/Dockerfile
+    image: herald:dev
+    depends_on:
+      - mongodb
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - MongoDb__ConnectionString=mongodb://mongodb:27017
+      - MarkdownWatch__RootPath=/work
+      - HtmlOutput__BasePath=/data/out
+      - MarkdownWatch__IntervalMinutes=1
+      - DateFolders__BasePath=/data
+      - DateFolders__CheckIntervalMinutes=1
+    volumes:
+      - ./:/work:ro
+      - ./.data:/data
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

@@ -79,3 +79,8 @@ Desktop.ini
 
 # Logs (extra)
 *.log
+
+# Local data and VS debug helpers
+.data/
+src/.data/
+out/

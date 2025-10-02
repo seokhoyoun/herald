@@ -9,6 +9,13 @@
     },
     "Container (Dockerfile)": {
       "commandName": "Docker"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "distributionName": ""
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json"

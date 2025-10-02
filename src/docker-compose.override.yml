@@ -1,0 +1,10 @@
+services:
+  herald:
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+      - HtmlOutput__BasePath=/data/out
+      - MarkdownWatch__IntervalMinutes=1
+      - DateFolders__CheckIntervalMinutes=1
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
