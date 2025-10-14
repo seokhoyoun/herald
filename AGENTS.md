@@ -1,13 +1,13 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `src/Herald.sln` — primary solution.
+- `Herald.sln` — primary solution.
 - `src/Herald/` — Worker service (`Program.cs`, `Worker.cs`, `appsettings*.json`, `Dockerfile`).
 - `tests/` — add test projects here (e.g., `tests/Herald.Tests/`).
 - Ignore IDE artifacts (`.vs/`, `*.user`) and do not commit secrets.
 
 ## Build, Test, and Development Commands
-- Restore and build: `dotnet restore`, `dotnet build src/Herald.sln`.
+- Restore and build: `dotnet restore`, `dotnet build Herald.sln`.
 - Run locally: `DOTNET_ENVIRONMENT=Development dotnet run --project src/Herald/Herald.csproj`.
 - Tests (once added): `dotnet test`.
 - Format code: `dotnet format`.
@@ -21,7 +21,7 @@
 - Keep namespaces aligned to folder structure under `src/Herald`.
 
 ## Testing Guidelines
-- Framework: xUnit (recommended). Create with `dotnet new xunit -o tests/Herald.Tests` and add to solution: `dotnet sln src/Herald.sln add tests/Herald.Tests/Herald.Tests.csproj`.
+- Framework: xUnit (recommended). Create with `dotnet new xunit -o tests/Herald.Tests` and add to solution: `dotnet sln Herald.sln add tests/Herald.Tests/Herald.Tests.csproj`.
 - Naming: `ClassName_MethodName_ShouldExpectedBehavior`.
 - Run: `dotnet test`. Optional coverage via coverlet if configured.
 
