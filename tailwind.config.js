@@ -10,26 +10,6 @@ export default {
       "2xl": "1536px",
     },
     extend: {
-      colors: {
-        text: "color-mix(in srgb, var(--color-base-content), transparent 28%)",
-        dark: "var(--color-base-content)",
-        primary: "var(--color-primary)",
-        body: "var(--color-base-100)",
-        border: "color-mix(in srgb, var(--color-base-content), transparent 80%)",
-        light: "color-mix(in srgb, var(--color-base-content), transparent 50%)",
-        "theme-light": "var(--color-base-200)",
-        "theme-dark": "var(--color-base-300)",
-        darkmode: {
-          text: "color-mix(in srgb, var(--color-base-content), transparent 28%)",
-          dark: "var(--color-base-content)",
-          light: "color-mix(in srgb, var(--color-base-content), transparent 10%)",
-          primary: "var(--color-primary)",
-          body: "var(--color-base-100)",
-          border: "color-mix(in srgb, var(--color-base-content), transparent 70%)",
-          "theme-light": "var(--color-base-200)",
-          "theme-dark": "var(--color-base-300)",
-        },
-      },
       fontFamily: {
         primary: ["Raleway", "sans-serif"],
         secondary: ["Merriweather Sans", "sans-serif"],

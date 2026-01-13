@@ -1,23 +1,27 @@
-import { component$ } from "@builder.io/qwik";
+﻿import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
-    <section class="rounded-2xl border border-base-300 bg-base-200/60 p-10 shadow-xl">
-      <h1 class="text-3xl font-semibold">Notes</h1>
-      <p class="mt-3 text-base-content/70">
-        짧은 메모와 아이디어를 정리할 공간입니다. 업데이트를 기대해 주세요.
-      </p>
+    <section class="section">
+      <div class="container">
+        <div class="rounded-lg border border-base-content/20 bg-base-100 p-10">
+          <h1>Notes</h1>
+          <p class="mt-3 text-base-content/80">
+            짧은 메모와 아이디어를 정리할 공간입니다. 업데이트를 기대해 주세요.
+          </p>
+        </div>
+      </div>
     </section>
   );
 });
 
 export const head: DocumentHead = {
-  title: "Notes - Herald",
+  title: "Notes - 윤석호의 블로그",
   meta: [
     {
       name: "description",
-      content: "Herald 블로그의 짧은 노트 모음",
+      content: "윤석호의 블로그 짧은 노트 모음",
     },
   ],
 };

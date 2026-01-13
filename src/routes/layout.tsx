@@ -96,7 +96,7 @@ export default component$(() => {
             </ul>
             <label class="theme-select">
               <PaletteIcon class="h-4 w-4" />
-              <span class="text-xs font-secondary text-light dark:text-darkmode-text">
+              <span class="text-xs font-secondary text-base-content/50">
                 Theme
               </span>
               <select
@@ -121,12 +121,12 @@ export default component$(() => {
       </main>
 
       <footer class="section">
-        <div class="container flex flex-wrap items-center justify-between gap-6 border-t border-border pt-10 dark:border-darkmode-border">
+        <div class="container flex flex-wrap items-center justify-between gap-6 border-t border-base-content/20 pt-10">
           <div>
-            <p class="text-lg font-semibold text-dark dark:text-darkmode-light">
+            <p class="text-lg font-semibold text-base-content">
               윤석호의 블로그
             </p>
-            <p class="text-sm text-light dark:text-darkmode-text">
+            <p class="text-sm text-base-content/50">
               Qwik + SQLite로 기록하는 개인 작업실
             </p>
           </div>

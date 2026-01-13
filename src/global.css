@@ -25,12 +25,11 @@
 
 @layer base {
   html {
-    @apply text-base;
+    @apply text-base text-base-content;
   }
 
   body {
-    @apply bg-body font-primary font-normal leading-relaxed text-text;
-    @apply dark:bg-darkmode-body dark:text-darkmode-text;
+    @apply bg-base-100 font-primary font-normal leading-relaxed text-base-content/80;
   }
 
   h1,
@@ -39,8 +38,7 @@
   h4,
   h5,
   h6 {
-    @apply font-secondary font-bold leading-tight text-dark;
-    @apply dark:text-darkmode-light;
+    @apply font-secondary font-bold leading-tight text-base-content;
   }
 
   h1,
@@ -89,8 +87,7 @@
   }
 
   .header {
-    @apply sticky top-0 z-40 border-b border-border bg-body py-4;
-    @apply dark:border-darkmode-border dark:bg-darkmode-body;
+    @apply sticky top-0 z-40 border-b border-base-content/20 bg-base-100 py-4;
   }
 
   .navbar {
@@ -98,8 +95,7 @@
   }
 
   .navbar-brand {
-    @apply text-xl font-semibold text-dark;
-    @apply dark:text-darkmode-light;
+    @apply text-xl font-semibold text-base-content;
   }
 
   .navbar-nav {
@@ -107,28 +103,24 @@
   }
 
   .nav-link {
-    @apply rounded-[30px] px-5 py-2.5 text-left font-secondary text-[13.5px] capitalize text-dark transition;
-    @apply hover:bg-primary hover:text-white dark:text-darkmode-light;
+    @apply rounded-[30px] px-5 py-2.5 text-left font-secondary text-[13.5px] capitalize text-base-content transition;
+    @apply hover:bg-primary hover:text-primary-content;
   }
 
   .nav-link.active {
-    @apply bg-primary text-white;
+    @apply bg-primary text-primary-content;
   }
 
   .theme-select {
-    @apply flex items-center gap-2 rounded-[30px] border border-border bg-theme-light px-4 py-2 text-sm shadow-sm;
-    @apply dark:border-darkmode-border;
-    @apply dark:bg-darkmode-theme-dark;
+    @apply flex items-center gap-2 rounded-[30px] border border-base-content/20 bg-base-200 px-4 py-2 text-sm shadow-sm;
   }
 
   .theme-select select {
-    @apply bg-transparent font-secondary text-sm text-dark outline-none;
-    @apply dark:text-darkmode-light;
+    @apply bg-transparent font-secondary text-sm text-base-content outline-none;
   }
 
   .eyebrow {
-    @apply font-secondary text-xs uppercase tracking-[0.4em] text-light;
-    @apply dark:text-darkmode-text;
+    @apply font-secondary text-xs uppercase tracking-[0.4em] text-base-content/50;
   }
 
   .section-title {
@@ -140,7 +132,7 @@
   }
 
   .btn-primary {
-    @apply btn relative h-12 overflow-hidden rounded-[50px] border-0 bg-primary px-8 text-white;
+    @apply btn relative h-12 overflow-hidden rounded-[50px] border-0 bg-primary px-8 text-primary-content;
   }
 
   .btn-primary::before {
@@ -158,7 +150,7 @@
 
   .btn-outline-primary::before {
     content: "";
-    @apply absolute right-0 top-0 h-full w-0 rounded-[50px] bg-black/5 transition-all duration-500;
+    @apply absolute right-0 top-0 h-full w-0 rounded-[50px] bg-base-content/5 transition-all duration-500;
   }
 
   .btn-outline-primary:hover::before {
@@ -174,39 +166,38 @@
   }
 
   .post-shell {
-    @apply bg-body dark:bg-darkmode-body;
+    @apply bg-base-100;
   }
 
   .post-card {
-    @apply rounded-lg border border-border bg-body p-6 shadow-sm transition;
-    @apply hover:shadow-md dark:border-darkmode-border dark:bg-darkmode-body;
+    @apply rounded-lg border border-base-content/20 bg-base-100 p-6 shadow-sm transition;
+    @apply hover:shadow-md;
   }
 
   .post-category {
-    @apply inline-flex h-7 items-center rounded-[35px] bg-primary px-3 text-xs text-white;
+    @apply inline-flex h-7 items-center rounded-[35px] bg-primary px-3 text-xs text-primary-content;
   }
 
   .post-meta {
-    @apply mt-3 flex items-center gap-4 font-secondary text-xs text-light;
-    @apply dark:text-darkmode-text;
+    @apply mt-3 flex items-center gap-4 font-secondary text-xs text-base-content/50;
   }
 
   .tag-pill {
-    @apply inline-flex items-center rounded-[35px] border border-border px-3 py-1 text-xs font-semibold text-dark transition;
-    @apply hover:bg-primary hover:text-white dark:border-darkmode-border dark:text-darkmode-light;
+    @apply inline-flex items-center rounded-[35px] border border-base-content/20 px-3 py-1 text-xs font-semibold text-base-content transition;
+    @apply hover:bg-primary hover:text-primary-content;
   }
 
   .tag-pill.active {
-    @apply bg-primary text-white;
+    @apply bg-primary text-primary-content;
   }
 
   .view-tab {
-    @apply rounded-[30px] border border-border px-4 py-2 text-sm font-secondary text-dark transition;
-    @apply hover:bg-primary hover:text-white dark:border-darkmode-border dark:text-darkmode-light;
+    @apply rounded-[30px] border border-base-content/20 px-4 py-2 text-sm font-secondary text-base-content transition;
+    @apply hover:bg-primary hover:text-primary-content;
   }
 
   .view-tab.active {
-    @apply bg-primary text-white;
+    @apply bg-primary text-primary-content;
   }
 
   .content {
@@ -215,24 +206,21 @@
     @apply prose-h1:text-h1-sm md:prose-h1:text-h1;
     @apply prose-h2:text-h2-sm md:prose-h2:text-h2;
     @apply prose-h3:text-h3-sm md:prose-h3:text-h3;
-    @apply prose-hr:border-border prose-hr:dark:border-darkmode-border;
-    @apply prose-p:text-base prose-p:text-text prose-p:dark:text-darkmode-text;
-    @apply prose-blockquote:rounded prose-blockquote:border-0 prose-blockquote:bg-theme-light prose-blockquote:py-1 prose-blockquote:px-12 prose-blockquote:not-italic;
-    @apply prose-blockquote:dark:bg-darkmode-theme-dark;
+    @apply prose-hr:border-base-content/20;
+    @apply prose-p:text-base prose-p:text-base-content/80;
+    @apply prose-blockquote:rounded prose-blockquote:border-0 prose-blockquote:bg-base-200 prose-blockquote:py-1 prose-blockquote:px-12 prose-blockquote:not-italic;
     @apply prose-code:px-1 prose-code:text-primary;
     @apply prose-pre:rounded;
     @apply prose-img:rounded;
     @apply prose-table:rounded;
-    @apply prose-strong:text-dark prose-strong:dark:text-darkmode-light;
+    @apply prose-strong:text-base-content;
     @apply prose-a:text-primary prose-a:no-underline hover:prose-a:underline;
-    @apply prose-li:text-text prose-li:dark:text-darkmode-text;
-    @apply prose-table:overflow-hidden prose-table:border prose-table:border-border;
-    @apply prose-table:dark:border-darkmode-border;
-    @apply prose-thead:border-border prose-thead:bg-theme-light;
-    @apply prose-thead:dark:border-darkmode-border prose-thead:dark:bg-darkmode-theme-dark;
-    @apply prose-th:py-4 prose-th:px-4 prose-th:text-dark prose-th:dark:text-darkmode-light;
-    @apply prose-tr:border-border prose-tr:dark:border-darkmode-border;
-    @apply prose-td:px-3 prose-td:py-4 prose-td:dark:text-darkmode-light;
+    @apply prose-li:text-base-content/80;
+    @apply prose-table:overflow-hidden prose-table:border prose-table:border-base-content/20;
+    @apply prose-thead:border-base-content/20 prose-thead:bg-base-200;
+    @apply prose-th:py-4 prose-th:px-4 prose-th:text-base-content;
+    @apply prose-tr:border-base-content/20;
+    @apply prose-td:px-3 prose-td:py-4;
   }
 }
 
