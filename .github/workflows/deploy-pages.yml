@@ -27,17 +27,31 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm run build.static
       - name: Resolve Pages output dir
         run: |
-          if [ -f "dist/${{ github.event.repository.name }}/index.html" ]; then
-            echo "PAGES_DIR=dist/${{ github.event.repository.name }}" >> $GITHUB_ENV
-          elif [ -f "dist/index.html" ]; then
-            echo "PAGES_DIR=dist" >> $GITHUB_ENV
-          else
-            echo "index.html not found in dist" >&2
-            exit 1
-          fi
+          python - <<'PY'
+          import os
+          import sys
+
+          candidates = []
+          for root, _dirs, files in os.walk("dist"):
+            if "index.html" in files:
+              candidates.append(root)
+
+          if not candidates:
+            print("index.html not found in dist", file=sys.stderr)
+            sys.exit(1)
+
+          candidates.sort(key=lambda p: (p.count(os.sep), len(p)))
+          chosen = candidates[0]
+          print("Found index.html directories:")
+          for c in candidates:
+            print("-", c)
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
+            f.write(f"PAGES_DIR={chosen}\n")
+          print("Using PAGES_DIR=", chosen)
+          PY
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.PAGES_DIR }}
