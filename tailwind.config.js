@@ -1,7 +1,6 @@
 ﻿/** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{ts,tsx,mdx}"],
-  darkMode: "class",
   theme: {
     screens: {
       sm: "540px",
@@ -12,23 +11,23 @@ export default {
     },
     extend: {
       colors: {
-        text: "oklch(var(--color-base-content) / 0.72)",
-        dark: "oklch(var(--color-base-content) / 1)",
-        primary: "oklch(var(--color-primary) / 1)",
-        body: "oklch(var(--color-base-100) / 1)",
-        border: "oklch(var(--color-base-content) / 0.2)",
-        light: "oklch(var(--color-base-content) / 0.5)",
-        "theme-light": "oklch(var(--color-base-200) / 1)",
-        "theme-dark": "oklch(var(--color-base-300) / 1)",
+        text: "color-mix(in srgb, var(--color-base-content), transparent 28%)",
+        dark: "var(--color-base-content)",
+        primary: "var(--color-primary)",
+        body: "var(--color-base-100)",
+        border: "color-mix(in srgb, var(--color-base-content), transparent 80%)",
+        light: "color-mix(in srgb, var(--color-base-content), transparent 50%)",
+        "theme-light": "var(--color-base-200)",
+        "theme-dark": "var(--color-base-300)",
         darkmode: {
-          text: "oklch(var(--color-base-content) / 0.72)",
-          dark: "oklch(var(--color-base-content) / 1)",
-          light: "oklch(var(--color-base-content) / 0.9)",
-          primary: "oklch(var(--color-primary) / 1)",
-          body: "oklch(var(--color-base-100) / 1)",
-          border: "oklch(var(--color-base-content) / 0.3)",
-          "theme-light": "oklch(var(--color-base-200) / 1)",
-          "theme-dark": "oklch(var(--color-base-300) / 1)",
+          text: "color-mix(in srgb, var(--color-base-content), transparent 28%)",
+          dark: "var(--color-base-content)",
+          light: "color-mix(in srgb, var(--color-base-content), transparent 10%)",
+          primary: "var(--color-primary)",
+          body: "var(--color-base-100)",
+          border: "color-mix(in srgb, var(--color-base-content), transparent 70%)",
+          "theme-light": "var(--color-base-200)",
+          "theme-dark": "var(--color-base-300)",
         },
       },
       fontFamily: {

@@ -1,5 +1,8 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;700&family=Raleway:wght@400;600&display=swap");
 @import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
 @config "../tailwind.config.js";
 @plugin "daisyui";
 @plugin "daisyui/theme" {
