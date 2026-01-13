@@ -3,6 +3,8 @@ import { Slot } from "@builder.io/qwik";
 import { PaletteIcon } from "lucide-qwik";
 
 const themes = [
+  "light",
+  "dark",
   "night",
   "dracula",
   "synthwave",
@@ -15,53 +17,89 @@ const themes = [
   "sunset",
 ];
 
+const darkThemes = [
+  "dark",
+  "night",
+  "dracula",
+  "synthwave",
+  "business",
+  "forest",
+  "luxury",
+  "sunset",
+];
+
 export default component$(() => {
   const theme = useSignal<string>("night");
 
+  const applyTheme = $((value: string) => {
+    if (typeof document === "undefined") {
+      return;
+    }
+    try {
+      localStorage.setItem("theme", value);
+    } catch {
+      // ignore
+    }
+    document.documentElement.dataset.theme = value;
+    document.body.dataset.theme = value;
+    document.documentElement.classList.toggle(
+      "dark",
+      darkThemes.includes(value),
+    );
+  });
+
   const setTheme = $((value: string) => {
     theme.value = value;
-    if (typeof document !== "undefined") {
-      document.documentElement.dataset.theme = value;
-    }
+    applyTheme(value);
   });
 
   useVisibleTask$(() => {
-    document.documentElement.dataset.theme = theme.value;
+    const current = document.documentElement.dataset.theme;
+    if (current) {
+      theme.value = current;
+    }
+    applyTheme(theme.value);
   });
 
   return (
-    <div class="min-h-screen bg-base-100 text-base-content">
-      <div class="mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-4 py-10 md:px-8">
-        <header class="navbar rounded-2xl border border-base-300 bg-base-200/70 shadow-xl">
-          <div class="navbar-start">
-            <div class="flex flex-col">
-              <span class="text-lg font-semibold tracking-[0.2em]">HERALD</span>
-              <span class="text-xs uppercase tracking-[0.4em] text-base-content/60">
-                Qwik Journal
-              </span>
-            </div>
+    <div class="min-h-screen">
+      <header class="header">
+        <nav class="navbar container">
+          <div class="flex items-center gap-4">
+            <a class="navbar-brand" href="/">
+              윤석호의 블로그
+            </a>
+            <span class="eyebrow">Qwik + SQLite</span>
           </div>
-          <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal gap-2 rounded-full bg-base-100/60 px-4">
+          <div class="flex flex-wrap items-center gap-4">
+            <ul class="navbar-nav">
               <li>
-                <a href="/">Home</a>
+                <a class="nav-link" href="/">
+                  Home
+                </a>
               </li>
               <li>
-                <a href="/essays">Essays</a>
+                <a class="nav-link" href="/essays">
+                  Essays
+                </a>
               </li>
               <li>
-                <a href="/notes">Notes</a>
+                <a class="nav-link" href="/notes">
+                  Notes
+                </a>
               </li>
               <li>
-                <a href="/about">About</a>
+                <a class="nav-link" href="/about">
+                  About
+                </a>
               </li>
             </ul>
-          </div>
-          <div class="navbar-end">
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="theme-select">
               <PaletteIcon class="h-4 w-4" />
+              <span class="text-xs font-secondary text-light dark:text-darkmode-text">
+                Theme
+              </span>
               <select
-                class="select select-sm border-none bg-transparent text-sm"
                 value={theme.value}
                 onChange$={(event) =>
                   setTheme((event.target as HTMLSelectElement).value)
@@ -75,32 +113,36 @@ export default component$(() => {
               </select>
             </label>
           </div>
-        </header>
+        </nav>
+      </header>
 
-        <main class="flex flex-col gap-10">
-          <Slot />
-        </main>
+      <main>
+        <Slot />
+      </main>
 
-        <footer class="footer items-center justify-between rounded-2xl border border-base-300 bg-base-200/60 px-6 py-6">
+      <footer class="section">
+        <div class="container flex flex-wrap items-center justify-between gap-6 border-t border-border pt-10 dark:border-darkmode-border">
           <div>
-            <p class="text-lg font-semibold">Herald</p>
-            <p class="text-sm text-base-content/60">
-              Qwik + SQLite로 구성하는 미니멀 블로그 실험실
+            <p class="text-lg font-semibold text-dark dark:text-darkmode-light">
+              윤석호의 블로그
+            </p>
+            <p class="text-sm text-light dark:text-darkmode-text">
+              Qwik + SQLite로 기록하는 개인 작업실
             </p>
           </div>
-          <div class="flex gap-4 text-sm">
-            <a class="link link-hover" href="#">
+          <div class="flex gap-4 text-sm font-secondary">
+            <a class="hover:text-primary" href="#">
               문의
             </a>
-            <a class="link link-hover" href="#">
+            <a class="hover:text-primary" href="#">
               뉴스레터
             </a>
-            <a class="link link-hover" href="#">
+            <a class="hover:text-primary" href="#">
               GitHub
             </a>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   );
 });

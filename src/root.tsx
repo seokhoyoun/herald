@@ -23,6 +23,38 @@ export default component$(() => {
           />
         )}
         <RouterHead />
+        <script
+          dangerouslySetInnerHTML={`
+            (function() {
+              const themes = [
+                "light", "dark", "night", "dracula", "synthwave", "business",
+                "forest", "luxury", "cupcake", "emerald", "corporate", "sunset"
+              ];
+              const darkThemes = [
+                "dark", "night", "dracula", "synthwave", "business",
+                "forest", "luxury", "sunset"
+              ];
+              try {
+                const storedTheme = localStorage.getItem('theme');
+                const theme = storedTheme && themes.includes(storedTheme) ? storedTheme : 'night';
+                
+                document.documentElement.dataset.theme = theme;
+                document.body.dataset.theme = theme;
+                
+                if (darkThemes.includes(theme)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {
+                // Fallback if localStorage access fails
+                document.documentElement.dataset.theme = 'night';
+                document.body.dataset.theme = 'night';
+                document.documentElement.classList.add('dark');
+              }
+            })();
+          `}
+        />
       </head>
       <body lang="ko">
         <RouterOutlet />
