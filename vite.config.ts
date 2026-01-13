@@ -5,6 +5,7 @@
 import { defineConfig, type UserConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
+import { staticAdapter } from "@builder.io/qwik-city/adapters/static/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
 import tailwindcss from "@tailwindcss/vite";
@@ -15,14 +16,20 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
   [key: string]: unknown;
 };
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
+const basePath = process.env.BASE_PATH ?? "/";
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
 
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
+    base: basePath,
     plugins: [
-      qwikCity(),
+      qwikCity({
+        adapter: staticAdapter({
+          origin: process.env.ORIGIN,
+        }),
+      }),
       qwikVite(),
       tsconfigPaths({ root: "." }),
       tailwindcss(),
