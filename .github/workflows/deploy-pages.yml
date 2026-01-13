@@ -27,7 +27,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run build.static
+      - run: npm run build
       - name: Resolve Pages output dir
         run: |
           python - <<'PY'
