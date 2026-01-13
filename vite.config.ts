@@ -17,6 +17,7 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
 };
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 const basePath = process.env.BASE_PATH ?? "/";
+const origin = process.env.ORIGIN ?? "http://localhost";
 /**
  * Note that Vite normally starts from `index.html` but the qwikCity plugin makes start at `src/entry.ssr.tsx` instead.
  */
@@ -25,14 +26,13 @@ export default defineConfig(({ command, mode }): UserConfig => {
   return {
     base: basePath,
     plugins: [
-      qwikCity({
-        adapter: staticAdapter({
-          origin: process.env.ORIGIN,
-        }),
-      }),
+      qwikCity(),
       qwikVite(),
       tsconfigPaths({ root: "." }),
       tailwindcss(),
+      staticAdapter({
+        origin,
+      }),
     ],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
