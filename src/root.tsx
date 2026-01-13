@@ -39,7 +39,6 @@ export default component$(() => {
                 const theme = storedTheme && themes.includes(storedTheme) ? storedTheme : 'night';
                 
                 document.documentElement.dataset.theme = theme;
-                document.body.dataset.theme = theme;
                 
                 if (darkThemes.includes(theme)) {
                   document.documentElement.classList.add('dark');
@@ -49,7 +48,6 @@ export default component$(() => {
               } catch (e) {
                 // Fallback if localStorage access fails
                 document.documentElement.dataset.theme = 'night';
-                document.body.dataset.theme = 'night';
                 document.documentElement.classList.add('dark');
               }
             })();

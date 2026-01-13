@@ -41,7 +41,6 @@ export default component$(() => {
       // ignore
     }
     document.documentElement.dataset.theme = value;
-    document.body.dataset.theme = value;
     document.documentElement.classList.toggle(
       "dark",
       darkThemes.includes(value),

@@ -4,22 +4,8 @@
 @variant dark (&:where(.dark, .dark *));
 
 @config "../tailwind.config.js";
-@plugin "daisyui";
-@plugin "daisyui/theme" {
-  themes: [
-    "light",
-    "dark",
-    "night",
-    "dracula",
-    "synthwave",
-    "business",
-    "forest",
-    "luxury",
-    "cupcake",
-    "emerald",
-    "corporate",
-    "sunset"
-  ];
+@plugin "daisyui" {
+  themes: all;
 }
 @plugin "@tailwindcss/typography";
 
