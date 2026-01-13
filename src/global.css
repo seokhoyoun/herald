@@ -1,0 +1,103 @@
+﻿@config "../tailwind.config.js";
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Sora:wght@300;400;600&display=swap");
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Sora", "Pretendard", "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+}
+
+.enter {
+  animation: fade-up 0.8s ease forwards;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.post-shell {
+  max-width: 760px;
+  margin: 24px auto 80px;
+}
+
+.post-content {
+  line-height: 1.75;
+  font-size: 1.02rem;
+}
+
+.post-content h1 {
+  font-size: 2.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.post-content h2 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.post-content p {
+  margin: 0 0 1.2rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 1.2rem;
+  padding-left: 1.4rem;
+}
+
+.post-content blockquote {
+  margin: 1.5rem 0;
+  padding: 16px 18px;
+  border-left: 3px solid hsl(var(--p));
+  background: hsl(var(--b2));
+}
+
+.post-content pre {
+  padding: 16px;
+  border-radius: 14px;
+  background: hsl(var(--b2));
+  border: 1px solid hsl(var(--bc) / 0.12);
+  overflow-x: auto;
+}
+
+.post-content code {
+  font-family: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", monospace;
+  font-size: 0.9rem;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    animation: none;
+  }
+}
+

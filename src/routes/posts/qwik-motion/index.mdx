@@ -1,0 +1,28 @@
+﻿export const head = {
+  title: "Qwik에서 인터랙션을 가볍게",
+  meta: [
+    {
+      name: "description",
+      content: "Qwik의 신호와 QRL로 인터랙션을 필요한 순간에만 깨우는 방법.",
+    },
+  ],
+};
+
+# Qwik에서 인터랙션을 가볍게
+
+Qwik은 **필요할 때만 하이드레이션**합니다. 따라서 UI 이벤트는 최대한
+가벼운 QRL로 분리하는 것이 중요합니다.
+
+## 예시
+
+```tsx
+const toggle = $(() => {
+  open.value = !open.value;
+});
+```
+
+## 체크리스트
+
+- 상호작용은 `$(...)`로 감싸기
+- 계산 로직은 `useComputed$`로 분리하기
+- 초기 렌더는 정적 마크업으로 구성하기

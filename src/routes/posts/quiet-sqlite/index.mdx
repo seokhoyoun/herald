@@ -1,0 +1,38 @@
+﻿export const head = {
+  title: "SQLite로 만드는 가벼운 블로그",
+  meta: [
+    {
+      name: "description",
+      content: "SQLite 스키마와 인덱스로 가벼운 블로그를 구축하는 노트.",
+    },
+  ],
+};
+
+# SQLite로 만드는 가벼운 블로그
+
+로컬 퍼스트 블로그는 **단순한 스키마**와 **빠른 읽기 경로**가 핵심입니다.
+이 글에서는 초기에 필요한 테이블과 인덱스를 최소로 제안합니다.
+
+## 기본 스키마
+
+```sql
+CREATE TABLE posts (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  excerpt TEXT NOT NULL,
+  body TEXT NOT NULL,
+  published_at TEXT NOT NULL,
+  tags TEXT NOT NULL
+);
+
+CREATE INDEX idx_posts_published_at ON posts(published_at DESC);
+CREATE INDEX idx_posts_slug ON posts(slug);
+```
+
+## 쿼리 메모
+
+- 최신 글: `ORDER BY published_at DESC LIMIT 8`
+- 태그 필터: `WHERE tags LIKE '%sqlite%'`
+
+> 간단한 블로그일수록 JSON 컬럼보다 문자열 배열을 먼저 고려해 보세요.
