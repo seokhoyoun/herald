@@ -28,9 +28,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Resolve Pages output dir
+        run: |
+          if [ -f "dist/${{ github.event.repository.name }}/index.html" ]; then
+            echo "PAGES_DIR=dist/${{ github.event.repository.name }}" >> $GITHUB_ENV
+          elif [ -f "dist/index.html" ]; then
+            echo "PAGES_DIR=dist" >> $GITHUB_ENV
+          else
+            echo "index.html not found in dist" >&2
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && 'dist' || format('dist/{0}', github.event.repository.name) }}
+          path: ${{ env.PAGES_DIR }}
 
   deploy:
     needs: build
