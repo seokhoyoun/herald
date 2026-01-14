@@ -59,7 +59,7 @@ export default component$(() => {
       <section class="section pt-0">
         <div class="container">
           <div class="flex flex-wrap items-center justify-between gap-4">
-            <h2 class="section-title">Posts</h2>
+            <h3>Posts</h3>
           </div>
 
           <div class="mt-6" />
@@ -69,10 +69,10 @@ export default component$(() => {
               <thead>
                 <tr>
                   <th scope="col">Title</th>
-                  <th scope="col">Category</th>
-                  <th scope="col">Tags</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Read</th>
+                  <th scope="col" class="post-table-col">Category</th>
+                  <th scope="col" class="post-table-col">Tags</th>
+                  <th scope="col" class="post-table-col">Date</th>
+                  <th scope="col" class="post-table-col">Read</th>
                 </tr>
               </thead>
               <tbody>
@@ -102,11 +102,14 @@ export default component$(() => {
                         >
                           {post.title}
                         </Link>
+                        <span class="post-table-date post-table-date-mobile">
+                          {post.date}
+                        </span>
                       </td>
-                      <td>
+                      <td class="post-table-col">
                         <span class="post-category">{post.category}</span>
                       </td>
-                      <td>
+                      <td class="post-table-col">
                         <div class="post-tags">
                           {post.tags.map((tag) => (
                             <span class="tag-pill" key={`${post.id}-${tag}`}>
@@ -115,8 +118,8 @@ export default component$(() => {
                           ))}
                         </div>
                       </td>
-                      <td>{post.date}</td>
-                      <td>{post.readTime}</td>
+                      <td class="post-table-col">{post.date}</td>
+                      <td class="post-table-col">{post.readTime}</td>
                     </tr>
                   ))
                 )}

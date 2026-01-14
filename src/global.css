@@ -163,6 +163,19 @@
     @apply border-t border-base-content/10 px-4 py-4 align-top text-base-content/80;
   }
 
+  .post-table-col {
+    @apply hidden md:table-cell;
+  }
+
+  .post-table-date,
+  .post-table-read {
+    @apply font-secondary text-xs uppercase tracking-[0.15em];
+  }
+
+  .post-table-date-mobile {
+    @apply mt-2 block text-xs text-base-content/60 md:hidden;
+  }
+
   .post-table tbody tr {
     @apply cursor-pointer transition;
   }
