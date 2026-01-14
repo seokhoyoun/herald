@@ -26,14 +26,8 @@ export default component$(() => {
         <script
           dangerouslySetInnerHTML={`
             (function() {
-              const themes = [
-                "light", "dark", "night", "dracula", "synthwave", "business",
-                "forest", "luxury", "cupcake", "emerald", "corporate", "sunset"
-              ];
-              const darkThemes = [
-                "dark", "night", "dracula", "synthwave", "business",
-                "forest", "luxury", "sunset"
-              ];
+              const themes = ["light", "night"];
+              const darkThemes = ["night"];
               try {
                 const storedTheme = localStorage.getItem('theme');
                 const theme = storedTheme && themes.includes(storedTheme) ? storedTheme : 'night';

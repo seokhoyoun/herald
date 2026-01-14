@@ -3,31 +3,8 @@ import { Slot } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import { PaletteIcon } from "lucide-qwik";
 
-const themes = [
-  "light",
-  "dark",
-  "night",
-  "dracula",
-  "synthwave",
-  "business",
-  "forest",
-  "luxury",
-  "cupcake",
-  "emerald",
-  "corporate",
-  "sunset",
-];
-
-const darkThemes = [
-  "dark",
-  "night",
-  "dracula",
-  "synthwave",
-  "business",
-  "forest",
-  "luxury",
-  "sunset",
-];
+const themes = ["light", "night"];
+const darkThemes = ["night"];
 
 export default component$(() => {
   const theme = useSignal<string>("night");
@@ -53,10 +30,13 @@ export default component$(() => {
     theme.value = value;
     applyTheme(value);
   });
+  const toggleTheme = $(() => {
+    setTheme(theme.value === "night" ? "light" : "night");
+  });
 
   useVisibleTask$(() => {
     const current = document.documentElement.dataset.theme;
-    if (current) {
+    if (current && themes.includes(current)) {
       theme.value = current;
     }
     applyTheme(theme.value);
@@ -68,9 +48,9 @@ export default component$(() => {
         <nav class="navbar container">
           <div class="flex items-center gap-4">
             <Link class="navbar-brand" href={baseUrl}>
-              윤석호의 블로그
+              stone2on
             </Link>
-            <span class="eyebrow">Qwik + SQLite</span>
+            <span class="eyebrow">IT Developer / Automation / AI </span>
           </div>
           <div class="flex flex-wrap items-center gap-4">
             <ul class="navbar-nav">
@@ -95,24 +75,20 @@ export default component$(() => {
                 </Link>
               </li>
             </ul>
-            <label class="theme-select">
+            <button
+              type="button"
+              class="theme-select"
+              aria-pressed={theme.value === "night"}
+              onClick$={toggleTheme}
+            >
               <PaletteIcon class="h-4 w-4" />
               <span class="text-xs font-secondary text-base-content/50">
                 Theme
               </span>
-              <select
-                value={theme.value}
-                onChange$={(event) =>
-                  setTheme((event.target as HTMLSelectElement).value)
-                }
-              >
-                {themes.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </label>
+              <span class="text-xs font-semibold uppercase tracking-[0.2em]">
+                {themes.find((item) => item === theme.value) ?? "night"}
+              </span>
+            </button>
           </div>
         </nav>
       </header>
@@ -125,10 +101,10 @@ export default component$(() => {
         <div class="container flex flex-wrap items-center justify-between gap-6 border-t border-base-content/20 pt-10">
           <div>
             <p class="text-lg font-semibold text-base-content">
-              윤석호의 블로그
+              stone2on
             </p>
             <p class="text-sm text-base-content/50">
-              Qwik + SQLite로 기록하는 개인 작업실
+              윤석호의 개발 블로그입니다.
             </p>
           </div>
           <div class="flex gap-4 text-sm font-secondary">
@@ -138,7 +114,7 @@ export default component$(() => {
             <a class="hover:text-primary" href="#">
               뉴스레터
             </a>
-            <a class="hover:text-primary" href="#">
+            <a class="hover:text-primary" href="https://github.com/seokhoyoun">
               GitHub
             </a>
           </div>

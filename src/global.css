@@ -143,21 +143,66 @@
     @apply left-0 w-full;
   }
 
-  .post-grid {
-    @apply mt-10 grid gap-10;
+  .post-table-wrap {
+    @apply mt-10 overflow-hidden rounded-lg border border-base-content/20 bg-base-100;
   }
 
-  .post-grid.two {
-    @apply md:grid-cols-2;
+  .post-table {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .post-table thead {
+    @apply bg-base-200 text-xs font-semibold uppercase tracking-[0.3em] text-base-content/60;
+  }
+
+  .post-table th {
+    @apply px-4 py-4 text-left;
+  }
+
+  .post-table td {
+    @apply border-t border-base-content/10 px-4 py-4 align-top text-base-content/80;
+  }
+
+  .post-table tbody tr {
+    @apply cursor-pointer transition;
+  }
+
+  .post-table tbody tr:hover {
+    @apply bg-base-200/60;
+  }
+
+  .post-table tbody tr:focus-visible {
+    @apply outline-none ring-2 ring-primary/40;
+  }
+
+  .post-table-title {
+    @apply font-secondary text-base text-base-content transition;
+    @apply hover:text-primary;
+  }
+
+  .post-tags {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .post-empty {
+    @apply py-10 text-center text-sm text-base-content/60;
+  }
+
+  .pagination {
+    @apply flex flex-wrap items-center justify-between gap-3 border-t border-base-content/10 px-4 py-4 text-xs uppercase tracking-[0.3em] text-base-content/60;
+  }
+
+  .pagination-btn {
+    @apply rounded-[30px] border border-base-content/20 px-4 py-2 font-secondary text-[11px] uppercase tracking-[0.25em] text-base-content transition;
+    @apply hover:bg-primary hover:text-primary-content disabled:cursor-not-allowed disabled:border-base-content/10 disabled:text-base-content/30 disabled:hover:bg-transparent;
+  }
+
+  .pagination-info {
+    @apply font-secondary;
   }
 
   .post-shell {
     @apply bg-base-100;
-  }
-
-  .post-card {
-    @apply rounded-lg border border-base-content/20 bg-base-100 p-6 shadow-sm transition;
-    @apply hover:shadow-md;
   }
 
   .post-category {
@@ -177,36 +222,39 @@
     @apply bg-primary text-primary-content;
   }
 
-  .view-tab {
-    @apply rounded-[30px] border border-base-content/20 px-4 py-2 text-sm font-secondary text-base-content transition;
-    @apply hover:bg-primary hover:text-primary-content;
-  }
-
-  .view-tab.active {
-    @apply bg-primary text-primary-content;
-  }
-
   .content {
     @apply prose max-w-none;
-    @apply prose-headings:mt-[.5em] prose-headings:mb-[.9em] prose-headings:font-bold;
+    @apply prose-headings:mt-[1.2em] prose-headings:mb-[.6em] prose-headings:font-semibold;
     @apply prose-h1:text-h1-sm md:prose-h1:text-h1;
     @apply prose-h2:text-h2-sm md:prose-h2:text-h2;
     @apply prose-h3:text-h3-sm md:prose-h3:text-h3;
     @apply prose-hr:border-base-content/20;
     @apply prose-p:text-base prose-p:text-base-content/80;
-    @apply prose-blockquote:rounded prose-blockquote:border-0 prose-blockquote:bg-base-200 prose-blockquote:py-1 prose-blockquote:px-12 prose-blockquote:not-italic;
-    @apply prose-code:px-1 prose-code:text-primary;
-    @apply prose-pre:rounded;
+    @apply prose-blockquote:border-l-4 prose-blockquote:border-base-content/20 prose-blockquote:bg-base-100 prose-blockquote:px-4 prose-blockquote:py-1 prose-blockquote:not-italic;
+    @apply prose-code:rounded prose-code:bg-base-200 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-[0.85em] prose-code:text-base-content;
+    @apply prose-pre:rounded-md prose-pre:border prose-pre:border-base-content/10 prose-pre:bg-base-200 prose-pre:p-4 prose-pre:font-mono prose-pre:text-sm prose-pre:text-base-content/90;
+    @apply prose-pre:overflow-x-auto;
     @apply prose-img:rounded;
-    @apply prose-table:rounded;
     @apply prose-strong:text-base-content;
-    @apply prose-a:text-primary prose-a:no-underline hover:prose-a:underline;
+    @apply prose-a:text-blue-600 prose-a:underline hover:prose-a:text-blue-700;
     @apply prose-li:text-base-content/80;
     @apply prose-table:overflow-hidden prose-table:border prose-table:border-base-content/20;
     @apply prose-thead:border-base-content/20 prose-thead:bg-base-200;
-    @apply prose-th:py-4 prose-th:px-4 prose-th:text-base-content;
+    @apply prose-th:py-2 prose-th:px-3 prose-th:text-base-content;
     @apply prose-tr:border-base-content/20;
-    @apply prose-td:px-3 prose-td:py-4;
+    @apply prose-td:px-3 prose-td:py-2;
+    @apply prose-kbd:rounded prose-kbd:border prose-kbd:border-base-content/20 prose-kbd:bg-base-100 prose-kbd:px-1.5 prose-kbd:py-0.5 prose-kbd:font-mono prose-kbd:text-xs;
+  }
+}
+
+@layer components {
+  .dark .content {
+    @apply prose-invert;
+    @apply prose-a:text-blue-400 hover:prose-a:text-blue-300;
+    @apply prose-code:bg-base-300 prose-pre:bg-base-300;
+    @apply prose-pre:border-base-content/20;
+    @apply prose-blockquote:border-base-content/30;
+    @apply prose-table:border-base-content/30 prose-thead:bg-base-300;
   }
 }
 

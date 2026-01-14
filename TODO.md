@@ -1,0 +1,5 @@
+- [ ] Standardize post list data source (MDX frontmatter pipeline, ordering, fallbacks)
+- [ ] Restore per-post head metadata (title, description, OG, canonical)
+- [ ] Add search + tag/category filtering
+- [ ] Add stable pagination with page URLs
+- [ ] Add SEO essentials (sitemap.xml, robots.txt, 404)
