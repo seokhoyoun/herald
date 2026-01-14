@@ -105,6 +105,15 @@
     @apply bg-transparent font-secondary text-sm text-base-content outline-none;
   }
 
+  .auth-button {
+    @apply flex items-center gap-2 rounded-[30px] border border-base-content/20 bg-base-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-base-content transition;
+    @apply hover:bg-primary hover:text-primary-content;
+  }
+
+  .auth-label {
+    @apply max-w-[160px] truncate text-xs normal-case text-base-content/60;
+  }
+
   .eyebrow {
     @apply font-secondary text-xs uppercase tracking-[0.4em] text-base-content/50;
   }
@@ -177,15 +186,11 @@
   }
 
   .post-table tbody tr {
-    @apply cursor-pointer transition;
+    @apply transition;
   }
 
   .post-table tbody tr:hover {
     @apply bg-base-200/60;
-  }
-
-  .post-table tbody tr:focus-visible {
-    @apply outline-none ring-2 ring-primary/40;
   }
 
   .post-table-title {

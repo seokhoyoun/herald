@@ -1,5 +1,9 @@
 - [ ] Standardize post list data source (MDX frontmatter pipeline, ordering, fallbacks)
-- [ ] Restore per-post head metadata (title, description, OG, canonical)
+- [x] Standardize post list data source (MDX frontmatter pipeline, ordering, fallbacks)
+- [x] Restore per-post head metadata (title, description)
 - [ ] Add search + tag/category filtering
 - [ ] Add stable pagination with page URLs
 - [ ] Add SEO essentials (sitemap.xml, robots.txt, 404)
+- [ ] Supabase: design schema for post views + comments
+- [ ] Supabase: auth strategy (anonymous vs. login) and moderation plan
+- [ ] Supabase: API integration (read/write) + rate limiting

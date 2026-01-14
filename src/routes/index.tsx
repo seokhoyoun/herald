@@ -1,6 +1,6 @@
 ﻿import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Link, useNavigate } from "@builder.io/qwik-city";
+import { Link } from "@builder.io/qwik-city";
 import { getPostList } from "../data/posts";
 
 const posts = getPostList();
@@ -9,7 +9,6 @@ export default component$(() => {
   const page = useSignal<number>(1);
   const baseUrl = import.meta.env.BASE_URL;
   const pageSize = 4;
-  const nav = useNavigate();
 
   const filteredPosts = useComputed$(() => {
     return posts;
@@ -30,9 +29,6 @@ export default component$(() => {
 
   const setPage = $((nextPage: number) => {
     page.value = Math.min(Math.max(1, nextPage), totalPages.value);
-  });
-  const openPost = $((slug: string) => {
-    nav(`${baseUrl}posts/${slug}`);
   });
 
 
@@ -84,17 +80,7 @@ export default component$(() => {
                   </tr>
                 ) : (
                   pagedPosts.value.map((post) => (
-                    <tr
-                      key={post.id}
-                      role="link"
-                      tabIndex={0}
-                      onClick$={() => openPost(post.slug)}
-                      onKeyDown$={(event) => {
-                        if (event.key === "Enter") {
-                          openPost(post.slug);
-                        }
-                      }}
-                    >
+                    <tr key={post.id}>
                       <td>
                         <Link
                           class="post-table-title"
