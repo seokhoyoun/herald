@@ -1,5 +1,6 @@
 ﻿import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { Link } from "@builder.io/qwik-city";
 import { ArrowUpRightIcon, TagsIcon } from "lucide-qwik";
 
 type Post = {
@@ -75,6 +76,7 @@ const posts: Post[] = [
 export default component$(() => {
   const view = useSignal<"grid" | "list">("grid");
   const activeCategory = useSignal<string>("All");
+  const baseUrl = import.meta.env.BASE_URL;
 
   const categories = Array.from(
     new Set(["All", ...posts.map((post) => post.category)]),
@@ -163,9 +165,12 @@ export default component$(() => {
               <article key={post.id} class="post-card">
                 <span class="post-category">{post.category}</span>
                 <h3 class="h5 mt-4">
-                  <a class="hover:text-primary" href={`/posts/${post.slug}`}>
+                  <Link
+                    class="hover:text-primary"
+                    href={`${baseUrl}posts/${post.slug}`}
+                  >
                     {post.title}
-                  </a>
+                  </Link>
                 </h3>
                 <div class="post-meta">
                   <span>{post.date}</span>
@@ -182,10 +187,13 @@ export default component$(() => {
                   ))}
                 </div>
                 <div class="mt-6">
-                  <a class="btn btn-outline-primary" href={`/posts/${post.slug}`}>
+                  <Link
+                    class="btn btn-outline-primary"
+                    href={`${baseUrl}posts/${post.slug}`}
+                  >
                     Read More
                     <ArrowUpRightIcon class="ml-2 inline-block h-4 w-4" />
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}

@@ -1,5 +1,6 @@
 ﻿import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Slot } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
 import { PaletteIcon } from "lucide-qwik";
 
 const themes = [
@@ -30,6 +31,7 @@ const darkThemes = [
 
 export default component$(() => {
   const theme = useSignal<string>("night");
+  const baseUrl = import.meta.env.BASE_URL;
 
   const applyTheme = $((value: string) => {
     if (typeof document === "undefined") {
@@ -65,32 +67,32 @@ export default component$(() => {
       <header class="header">
         <nav class="navbar container">
           <div class="flex items-center gap-4">
-            <a class="navbar-brand" href="/">
+            <Link class="navbar-brand" href={baseUrl}>
               윤석호의 블로그
-            </a>
+            </Link>
             <span class="eyebrow">Qwik + SQLite</span>
           </div>
           <div class="flex flex-wrap items-center gap-4">
             <ul class="navbar-nav">
               <li>
-                <a class="nav-link" href="/">
+                <Link class="nav-link" href={baseUrl}>
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a class="nav-link" href="/essays">
+                <Link class="nav-link" href={`${baseUrl}essays`}>
                   Essays
-                </a>
+                </Link>
               </li>
               <li>
-                <a class="nav-link" href="/notes">
+                <Link class="nav-link" href={`${baseUrl}notes`}>
                   Notes
-                </a>
+                </Link>
               </li>
               <li>
-                <a class="nav-link" href="/about">
+                <Link class="nav-link" href={`${baseUrl}about`}>
                   About
-                </a>
+                </Link>
               </li>
             </ul>
             <label class="theme-select">
