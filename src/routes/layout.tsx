@@ -37,10 +37,11 @@ export default component$(() => {
   });
   const signIn = $(() => {
     const supabase = getSupabaseClient();
+    const redirectTo = `${window.location.origin}${baseUrl}`;
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: window.location.href,
+        redirectTo,
       },
     });
   });
@@ -68,12 +69,18 @@ export default component$(() => {
         .then(({ data, error }) => {
           if (!error) {
             userEmail.value = data.session?.user.email ?? null;
+          } else {
+            userEmail.value = null;
           }
         })
         .finally(() => {
           url.searchParams.delete("code");
           url.searchParams.delete("state");
-          window.history.replaceState({}, document.title, url.toString());
+          window.history.replaceState(
+            {},
+            document.title,
+            `${window.location.origin}${baseUrl}`,
+          );
         });
     } else {
       supabase.auth.getSession().then(({ data }) => {
