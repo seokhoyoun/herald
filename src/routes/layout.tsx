@@ -8,6 +8,9 @@ const themes = ["light", "night"];
 const darkThemes = ["night"];
 
 export default component$(() => {
+  if (typeof window !== "undefined") {
+    console.info("[auth] layout loaded");
+  }
   const theme = useSignal<string>("night");
   const userEmail = useSignal<string | null>(null);
   const baseUrl = import.meta.env.BASE_URL;
@@ -37,7 +40,10 @@ export default component$(() => {
   });
   const signIn = $(() => {
     const supabase = getSupabaseClient();
-    const redirectTo = `${window.location.origin}${baseUrl}`;
+    const redirectTo = import.meta.env.DEV
+      ? `${window.location.origin}/`
+      : `${window.location.origin}${baseUrl}`;
+    console.info("[auth] signIn start", { redirectTo });
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -63,33 +69,60 @@ export default component$(() => {
     const url = new URL(window.location.href);
     const code = url.searchParams.get("code");
 
-    if (code) {
-      supabase.auth
-        .exchangeCodeForSession(code)
-        .then(({ data, error }) => {
-          if (!error) {
-            userEmail.value = data.session?.user.email ?? null;
-          } else {
-            userEmail.value = null;
-          }
-        })
-        .finally(() => {
-          url.searchParams.delete("code");
-          url.searchParams.delete("state");
-          window.history.replaceState(
-            {},
-            document.title,
-            `${window.location.origin}${baseUrl}`,
-          );
+    const clearInvalidSession = async (error?: { message?: string }) => {
+      if (error?.message?.includes("Invalid Refresh Token")) {
+        console.warn("[auth] invalid refresh token; clearing local session");
+        await supabase.auth.signOut({ scope: "local" });
+      }
+    };
+
+    const syncSession = async () => {
+      if (code) {
+        console.info("[auth] exchangeCodeForSession start");
+        const { data, error } = await supabase.auth.exchangeCodeForSession(
+          code,
+        );
+        if (error) {
+          console.warn("[auth] exchangeCodeForSession error", error);
+          await clearInvalidSession(error);
+        }
+        console.info("[auth] exchangeCodeForSession result", {
+          user: data.session?.user?.email ?? null,
+          hasSession: Boolean(data.session),
         });
-    } else {
-      supabase.auth.getSession().then(({ data }) => {
         userEmail.value = data.session?.user.email ?? null;
+        url.searchParams.delete("code");
+        url.searchParams.delete("state");
+        window.history.replaceState(
+          {},
+          document.title,
+          `${window.location.origin}${baseUrl}`,
+        );
+        return;
+      }
+
+      console.info("[auth] getSession start");
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.warn("[auth] getSession error", error);
+        await clearInvalidSession(error);
+      }
+      console.info("[auth] getSession result", {
+        user: data.session?.user?.email ?? null,
+        hasSession: Boolean(data.session),
       });
-    }
+      userEmail.value = data.session?.user.email ?? null;
+    };
+
+    void syncSession();
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        console.info("[auth] state change", {
+          event: _event,
+          user: session?.user?.email ?? null,
+          hasSession: Boolean(session),
+        });
         userEmail.value = session?.user.email ?? null;
       },
     );

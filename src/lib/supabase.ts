@@ -14,7 +14,7 @@ export const getSupabaseClient = () => {
   client = createClient(url, anonKey, {
     auth: {
       persistSession: true,
-      detectSessionInUrl: true,
+      detectSessionInUrl: false,
       flowType: "pkce",
     },
   });
