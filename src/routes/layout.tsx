@@ -159,6 +159,11 @@ export default component$(() => {
                 </Link>
               </li>
               <li>
+                <Link class="nav-link" href={`${baseUrl}workouts`}>
+                  Workouts
+                </Link>
+              </li>
+              <li>
                 <Link class="nav-link" href={`${baseUrl}about`}>
                   About
                 </Link>
