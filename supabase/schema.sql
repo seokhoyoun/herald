@@ -1,6 +1,16 @@
 -- Supabase schema for post views + comments.
 
-create type comment_status as enum ('pending', 'approved', 'spam', 'deleted');
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_type
+    where typname = 'comment_status'
+  ) then
+    create type comment_status as enum ('pending', 'approved', 'spam', 'deleted');
+  end if;
+end;
+$$;
 
 create table if not exists post_stats (
   slug text primary key,
@@ -48,17 +58,53 @@ $$;
 alter table post_stats enable row level security;
 alter table post_comments enable row level security;
 
-create policy "post_stats_read" on post_stats
-  for select using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'post_stats'
+      and policyname = 'post_stats_read'
+  ) then
+    create policy "post_stats_read" on post_stats
+      for select using (true);
+  end if;
+end;
+$$;
 
-create policy "post_comments_read_approved" on post_comments
-  for select using (status = 'approved');
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'post_comments'
+      and policyname = 'post_comments_read_approved'
+  ) then
+    create policy "post_comments_read_approved" on post_comments
+      for select using (status = 'approved');
+  end if;
+end;
+$$;
 
-create policy "post_comments_insert_pending" on post_comments
-  for insert with check (
-    auth.uid() = author_id
-    and status = 'pending'
-  );
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'post_comments'
+      and policyname = 'post_comments_insert_pending'
+  ) then
+    create policy "post_comments_insert_pending" on post_comments
+      for insert with check (
+        auth.uid() = author_id
+        and status = 'pending'
+      );
+  end if;
+end;
+$$;
 
 create table if not exists workout_logs (
   id uuid primary key default gen_random_uuid(),
@@ -75,14 +121,62 @@ create index if not exists workout_logs_workout_date_idx
 
 alter table workout_logs enable row level security;
 
-create policy "workout_logs_read" on workout_logs
-  for select using (true);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'workout_logs'
+      and policyname = 'workout_logs_read'
+  ) then
+    create policy "workout_logs_read" on workout_logs
+      for select using (true);
+  end if;
+end;
+$$;
 
-create policy "workout_logs_insert" on workout_logs
-  for insert with check (auth.uid() = author_id);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'workout_logs'
+      and policyname = 'workout_logs_insert'
+  ) then
+    create policy "workout_logs_insert" on workout_logs
+      for insert with check (auth.uid() = author_id);
+  end if;
+end;
+$$;
 
-create policy "workout_logs_update" on workout_logs
-  for update using (auth.uid() = author_id);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'workout_logs'
+      and policyname = 'workout_logs_update'
+  ) then
+    create policy "workout_logs_update" on workout_logs
+      for update using (auth.uid() = author_id);
+  end if;
+end;
+$$;
 
-create policy "workout_logs_delete" on workout_logs
-  for delete using (auth.uid() = author_id);
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_policies
+    where schemaname = 'public'
+      and tablename = 'workout_logs'
+      and policyname = 'workout_logs_delete'
+  ) then
+    create policy "workout_logs_delete" on workout_logs
+      for delete using (auth.uid() = author_id);
+  end if;
+end;
+$$;
