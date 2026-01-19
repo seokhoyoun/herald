@@ -144,7 +144,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content: "Qwik과 SQLite로 기록하는 윤석호의 개인 작업실",
+      content: "stone2on 개인 블로그",
     },
   ],
 };

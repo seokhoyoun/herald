@@ -27,7 +27,7 @@ export default component$(() => {
   const content = useSignal("");
   const workoutDate = useSignal(toInputDate(new Date()));
 
-  const refreshLogs = async () => {
+  const refreshLogs = $(async () => {
     isLoading.value = true;
     error.value = null;
     const supabase = getSupabaseClient();
@@ -43,7 +43,7 @@ export default component$(() => {
       logs.value = data ?? [];
     }
     isLoading.value = false;
-  };
+  });
 
   const handleSubmit = $(
     async (event: SubmitEvent) => {
