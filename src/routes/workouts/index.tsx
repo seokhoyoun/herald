@@ -139,72 +139,76 @@ export default component$(() => {
             )}
           </div>
 
-          <form
-            class="rounded-lg border border-base-content/20 bg-base-100 p-6 md:p-8"
-            onSubmit$={handleSubmit}
-          >
-            <h2 class="text-xl">새 기록</h2>
-            <p class="mt-2 text-sm text-base-content/60">
-              로그인한 계정으로 저장됩니다.
-            </p>
-            {!userId.value ? (
-              <p class="mt-3 text-sm text-warning">
-                저장하려면 상단에서 로그인해 주세요.
-              </p>
-            ) : null}
-
-            <div class="mt-6 grid gap-4">
-              <label class="text-sm font-semibold text-base-content">
-                날짜
-                <input
-                  class="mt-2 w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
-                  type="date"
-                  value={workoutDate.value}
-                  onInput$={$((event) => {
-                    workoutDate.value = (
-                      event.target as HTMLInputElement
-                    ).value;
-                  })}
-                  required
-                />
-              </label>
-              <label class="text-sm font-semibold text-base-content">
-                제목
-                <input
-                  class="mt-2 w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
-                  type="text"
-                  value={title.value}
-                  onInput$={$((event) => {
-                    title.value = (event.target as HTMLInputElement).value;
-                  })}
-                  placeholder="오늘 한 운동"
-                  required
-                />
-              </label>
-              <label class="text-sm font-semibold text-base-content">
-                내용
-                <textarea
-                  class="mt-2 min-h-[160px] w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
-                  value={content.value}
-                  onInput$={$((event) => {
-                    content.value = (
-                      event.target as HTMLTextAreaElement
-                    ).value;
-                  })}
-                  placeholder="운동 종류, 세트, 느낌 등을 적어주세요."
-                  required
-                />
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              class="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60"
-              disabled={!userId.value || isSaving.value}
+          {userId.value ? (
+            <form
+              class="rounded-lg border border-base-content/20 bg-base-100 p-6 md:p-8"
+              onSubmit$={handleSubmit}
             >
-              {isSaving.value ? "저장 중..." : "운동일지 저장"}
-            </button>
-          </form>
+              <h2 class="text-xl">새 기록</h2>
+              <p class="mt-2 text-sm text-base-content/60">
+                로그인한 계정으로 저장됩니다.
+              </p>
+
+              <div class="mt-6 grid gap-4">
+                <label class="text-sm font-semibold text-base-content">
+                  날짜
+                  <input
+                    class="mt-2 w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
+                    type="date"
+                    value={workoutDate.value}
+                    onInput$={$((event) => {
+                      workoutDate.value = (
+                        event.target as HTMLInputElement
+                      ).value;
+                    })}
+                    required
+                  />
+                </label>
+                <label class="text-sm font-semibold text-base-content">
+                  제목
+                  <input
+                    class="mt-2 w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
+                    type="text"
+                    value={title.value}
+                    onInput$={$((event) => {
+                      title.value = (event.target as HTMLInputElement).value;
+                    })}
+                    placeholder="오늘 한 운동"
+                    required
+                  />
+                </label>
+                <label class="text-sm font-semibold text-base-content">
+                  내용
+                  <textarea
+                    class="mt-2 min-h-[160px] w-full rounded-md border border-base-content/20 bg-base-100 px-3 py-2 text-sm text-base-content"
+                    value={content.value}
+                    onInput$={$((event) => {
+                      content.value = (
+                        event.target as HTMLTextAreaElement
+                      ).value;
+                    })}
+                    placeholder="운동 종류, 세트, 느낌 등을 적어주세요."
+                    required
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                class="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={isSaving.value}
+              >
+                {isSaving.value ? "저장 중..." : "운동일지 저장"}
+              </button>
+            </form>
+          ) : (
+            <div class="rounded-lg border border-base-content/20 bg-base-100 p-6 md:p-8">
+              <h2 class="text-xl">로그인이 필요합니다</h2>
+              <p class="mt-2 text-sm text-base-content/60">
+                운동일지 작성은 로그인한 사용자에게만 보여집니다.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>
