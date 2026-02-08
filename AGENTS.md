@@ -23,6 +23,9 @@
 - Linting: ESLint with Qwik and TypeScript rules; no explicit custom rules beyond defaults.
 - Routes: Use QwikCity conventions (`src/routes/<route>/index.tsx`).
 
+## .NET Guidelines
+- Avoid tuple return types in C#; use named records or classes instead.
+
 ## Testing Guidelines
 - No test runner or scripts are configured yet. If you add tests, also add a `test` script to `package.json` and document the framework here.
 

@@ -40,3 +40,14 @@ lerna-debug.log*
 # Yarn
 .yarn/*
 !.yarn/releases
+
+# .NET
+.vs/
+**/bin/
+**/obj/
+*.user
+*.rsuser
+*.sln.docstates
+*.suo
+*.userosscache
+*.sln.dotsettings.user
