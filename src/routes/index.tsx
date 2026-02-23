@@ -1,25 +1,83 @@
 ﻿import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Link } from "@builder.io/qwik-city";
+import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { getPostList } from "../data/posts";
 
 const posts = getPostList();
 
 export default component$(() => {
-  const page = useSignal<number>(1);
+  const searchQuery = useSignal("");
+  const selectedCategory = useSignal("all");
+  const selectedTag = useSignal("all");
+  const location = useLocation();
+  const navigate = useNavigate();
   const baseUrl = import.meta.env.BASE_URL;
   const pageSize = 4;
 
+  const categories = useComputed$(() => {
+    return [
+      "all",
+      ...Array.from(new Set(posts.map((post) => post.category))).sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    ];
+  });
+
+  const tags = useComputed$(() => {
+    const scopedPosts =
+      selectedCategory.value === "all"
+        ? posts
+        : posts.filter((post) => post.category === selectedCategory.value);
+    return [
+      "all",
+      ...Array.from(
+        new Set(scopedPosts.flatMap((post) => post.tags)),
+      ).sort((a, b) => a.localeCompare(b)),
+    ];
+  });
+
   const filteredPosts = useComputed$(() => {
-    return posts;
+    const query = searchQuery.value.trim().toLowerCase();
+    return posts.filter((post) => {
+      if (
+        selectedCategory.value !== "all" &&
+        post.category !== selectedCategory.value
+      ) {
+        return false;
+      }
+      if (selectedTag.value !== "all" && !post.tags.includes(selectedTag.value)) {
+        return false;
+      }
+      if (!query) {
+        return true;
+      }
+      const searchableText = [
+        post.title,
+        post.excerpt,
+        post.category,
+        post.tags.join(" "),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return searchableText.includes(query);
+    });
   });
 
   const totalPages = useComputed$(() => {
     return Math.max(1, Math.ceil(filteredPosts.value.length / pageSize));
   });
 
+  const requestedPage = useComputed$(() => {
+    const raw = location.url.searchParams.get("page");
+    const parsed = Number.parseInt(raw ?? "1", 10);
+    if (!Number.isFinite(parsed) || parsed < 1) {
+      return 1;
+    }
+    return parsed;
+  });
+
   const currentPage = useComputed$(() => {
-    return Math.min(page.value, totalPages.value);
+    return Math.min(requestedPage.value, totalPages.value);
   });
 
   const pagedPosts = useComputed$(() => {
@@ -27,10 +85,41 @@ export default component$(() => {
     return filteredPosts.value.slice(start, start + pageSize);
   });
 
-  const setPage = $((nextPage: number) => {
-    page.value = Math.min(Math.max(1, nextPage), totalPages.value);
+  const setPage = $(async (nextPage: number) => {
+    const clampedPage = Math.min(Math.max(1, nextPage), totalPages.value);
+    const url = new URL(location.url.href);
+    if (clampedPage <= 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", String(clampedPage));
+    }
+    await navigate(`${url.pathname}${url.search}${url.hash}`, {
+      scroll: false,
+    });
   });
 
+  const onSearchInput = $((event: Event) => {
+    searchQuery.value = (event.target as HTMLInputElement).value;
+    void setPage(1);
+  });
+
+  const onCategoryChange = $((event: Event) => {
+    selectedCategory.value = (event.target as HTMLSelectElement).value;
+    selectedTag.value = "all";
+    void setPage(1);
+  });
+
+  const onTagChange = $((event: Event) => {
+    selectedTag.value = (event.target as HTMLSelectElement).value;
+    void setPage(1);
+  });
+
+  const clearFilters = $(() => {
+    searchQuery.value = "";
+    selectedCategory.value = "all";
+    selectedTag.value = "all";
+    void setPage(1);
+  });
 
   return (
     <>
@@ -56,9 +145,66 @@ export default component$(() => {
         <div class="container">
           <div class="flex flex-wrap items-center justify-between gap-4">
             <h3>Posts</h3>
+            <span class="post-meta">
+              {filteredPosts.value.length} / {posts.length} shown
+            </span>
           </div>
 
-          <div class="mt-6" />
+          <div class="mt-6 grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
+            <label class="sr-only" for="post-search">
+              Search posts
+            </label>
+            <input
+              id="post-search"
+              class="w-full rounded-[30px] border border-base-content/20 bg-base-100 px-4 py-2 text-sm text-base-content outline-none ring-primary/20 transition focus:ring-2"
+              type="search"
+              placeholder="Search title, excerpt, tags..."
+              value={searchQuery.value}
+              onInput$={onSearchInput}
+            />
+            <label class="sr-only" for="post-category">
+              Filter by category
+            </label>
+            <select
+              id="post-category"
+              class="w-full rounded-[30px] border border-base-content/20 bg-base-100 px-4 py-2 text-sm text-base-content outline-none ring-primary/20 transition focus:ring-2"
+              value={selectedCategory.value}
+              onChange$={onCategoryChange}
+            >
+              {categories.value.map((category) => (
+                <option value={category} key={`category-${category}`}>
+                  {category === "all" ? "All categories" : category}
+                </option>
+              ))}
+            </select>
+            <label class="sr-only" for="post-tag">
+              Filter by tag
+            </label>
+            <select
+              id="post-tag"
+              class="w-full rounded-[30px] border border-base-content/20 bg-base-100 px-4 py-2 text-sm text-base-content outline-none ring-primary/20 transition focus:ring-2"
+              value={selectedTag.value}
+              onChange$={onTagChange}
+            >
+              {tags.value.map((tag) => (
+                <option value={tag} key={`tag-${tag}`}>
+                  {tag === "all" ? "All tags" : tag}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              class="pagination-btn"
+              disabled={
+                !searchQuery.value &&
+                selectedCategory.value === "all" &&
+                selectedTag.value === "all"
+              }
+              onClick$={clearFilters}
+            >
+              Clear
+            </button>
+          </div>
 
           <div class="post-table-wrap enter" style={{ "--delay": "0.2s" }}>
             <table class="post-table">

@@ -81,6 +81,7 @@ export default component$(() => {
     },
   );
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     const supabase = getSupabaseClient();
     const { data } = await supabase.auth.getUser();

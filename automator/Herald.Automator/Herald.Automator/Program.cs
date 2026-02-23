@@ -9,6 +9,10 @@ internal class Program
         Env.Load();
 
         var builder = Host.CreateApplicationBuilder(args);
+        var runNow = args.Any(arg => arg.Equals("--run-now", StringComparison.OrdinalIgnoreCase));
+
+        builder.Services.Configure<BlogSettings>(builder.Configuration.GetSection("BlogSettings"));
+        builder.Services.AddSingleton(new RuntimeFlags(runNow));
         builder.Services.AddHostedService<Worker>();
         builder.Services.AddTransient<BlogGenerator>();
         builder.Services.AddTransient<GitAutomationService>();

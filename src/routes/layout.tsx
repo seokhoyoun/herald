@@ -56,6 +56,7 @@ export default component$(() => {
     supabase.auth.signOut();
   });
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     const current = document.documentElement.dataset.theme;
     if (current && themes.includes(current)) {
@@ -64,6 +65,7 @@ export default component$(() => {
     applyTheme(theme.value);
   });
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     const supabase = getSupabaseClient();
     const url = new URL(window.location.href);
