@@ -87,13 +87,8 @@ export default component$(() => {
 
   const setPage = $(async (nextPage: number) => {
     const clampedPage = Math.min(Math.max(1, nextPage), totalPages.value);
-    const url = new URL(location.url.href);
-    if (clampedPage <= 1) {
-      url.searchParams.delete("page");
-    } else {
-      url.searchParams.set("page", String(clampedPage));
-    }
-    await navigate(`${url.pathname}${url.search}${url.hash}`, {
+    const href = clampedPage <= 1 ? baseUrl : `${baseUrl}?page=${clampedPage}`;
+    await navigate(href, {
       scroll: false,
     });
   });
@@ -294,4 +289,3 @@ export const head: DocumentHead = {
     },
   ],
 };
-
