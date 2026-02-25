@@ -51,7 +51,7 @@ export default component$(() => {
   const authorName = useSignal<string | null>(null);
   const body = useSignal("");
 
-  const loadSession = async () => {
+  const loadSession = $(async () => {
     const supabase = getSupabaseClient();
     const { data } = await supabase.auth.getUser();
     userId.value = data.user?.id ?? null;
@@ -59,9 +59,9 @@ export default component$(() => {
       (data.user?.user_metadata?.name as string | undefined) ??
       data.user?.email?.split("@")[0] ??
       null;
-  };
+  });
 
-  const loadComments = async () => {
+  const loadComments = $(async () => {
     const postSlug = resolvePostSlug(location.url.pathname, baseUrl);
     if (!postSlug) {
       comments.value = [];
@@ -84,7 +84,7 @@ export default component$(() => {
       comments.value = data ?? [];
     }
     isLoading.value = false;
-  };
+  });
 
   const submitComment = $(async (event: SubmitEvent) => {
     event.preventDefault();

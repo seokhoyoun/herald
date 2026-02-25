@@ -48,6 +48,41 @@ npm start # or `yarn start`
 
 > Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
 
+## Supabase (Local)
+
+1. Install Docker Desktop (WSL integration enabled) and Supabase CLI.
+2. Start local Supabase services:
+
+```shell
+npm run supabase:start
+```
+
+3. Check local connection values:
+
+```shell
+npm run supabase:status
+```
+
+4. Set `.env.local` with local values:
+
+```env
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_ANON_KEY=<anon key from supabase status>
+```
+
+5. Run the app:
+
+```shell
+npm run dev
+```
+
+Useful commands:
+
+```shell
+npm run supabase:db:reset
+npm run supabase:stop
+```
+
 ## Preview
 
 The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.

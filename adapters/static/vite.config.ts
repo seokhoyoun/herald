@@ -12,7 +12,7 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [
       staticAdapter({
-        origin: "https://seokhoyoun.github.i",
+        origin: "https://seokhoyoun.github.io",
       }),
     ],
   };

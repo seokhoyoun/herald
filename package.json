@@ -27,6 +27,10 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
+    "supabase:db:reset": "supabase db reset",
+    "supabase:start": "supabase start",
+    "supabase:status": "supabase status",
+    "supabase:stop": "supabase stop",
     "test": "node --test tests/**/*.test.js",
     "qwik": "qwik"
   },
