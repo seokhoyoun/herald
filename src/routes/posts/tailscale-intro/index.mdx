@@ -1,0 +1,71 @@
+---
+title: "Tailscale 소개: VPN보다 가볍게 사설망 연결하기"
+excerpt: "WireGuard 기반 Tailscale로 서버, 노트북, 모바일을 빠르게 같은 네트워크로 묶는 방법."
+description: "WireGuard 기반 Tailscale로 서버, 노트북, 모바일을 빠르게 같은 네트워크로 묶는 방법."
+date: "2026-02-25"
+readTime: "7 min"
+tags: ["Tailscale", "Network", "Infra"]
+category: "Infra"
+accent: "lime"
+---
+
+# Tailscale 소개: VPN보다 가볍게 사설망 연결하기
+
+집 PC, 클라우드 VM, 노트북, 모바일을 안전하게 연결하려고 하면
+VPN 구성부터 방화벽, 포트포워딩까지 손이 많이 갑니다.
+**Tailscale**은 이 과정을 크게 줄여서, 장비를 로그인 기반으로 같은
+사설 네트워크(Tailnet)에 붙여줍니다.
+
+## Tailscale이 편한 이유
+
+- 포트포워딩 없이 장비 간 연결 가능
+- WireGuard 기반으로 성능과 보안 모두 준수
+- Google/GitHub/Microsoft 같은 SSO로 접근 제어 가능
+- 장비별 ACL 정책으로 최소 권한 구성 가능
+
+## 핵심 개념 4가지
+
+1. `Tailnet`  
+내 계정(또는 조직) 아래 묶인 사설 네트워크입니다.
+
+2. `Node`  
+Tailscale이 설치된 각 장비(서버/노트북/모바일)입니다.
+
+3. `Exit Node`  
+특정 장비를 인터넷 출구로 사용해, 외부 트래픽까지 우회할 수 있습니다.
+
+4. `Subnet Router`  
+기존 사내망/홈망 대역을 Tailnet에 광고해 레거시 장비와 연동합니다.
+
+## 빠른 시작 체크리스트
+
+```bash
+# 1) 설치
+curl -fsSL https://tailscale.com/install.sh | sh
+
+# 2) 로그인 + 연결
+sudo tailscale up
+
+# 3) 상태 확인
+tailscale status
+```
+
+- 먼저 개인 장비 2대(노트북 + VM)만 붙여 동작 확인
+- SSH가 필요하면 `sudo tailscale up --ssh` 옵션 고려
+- 공유 장비는 ACL 태그를 먼저 설계하고 연결
+
+## 운영 팁
+
+- 장비 이름은 역할 중심으로 정리 (`blog-prod`, `dev-laptop` 등)
+- ACL은 허용 대상만 명시하는 방식으로 최소화
+- 만료 키 대신 SSO + 기기 승인 흐름을 기본으로 사용
+- 외부 공개가 목적이면 Tailnet 내부 서비스와 분리해서 설계
+
+## 언제 특히 유용한가
+
+- 개인 프로젝트 서버를 안전하게 원격 관리할 때
+- CI/CD, 배치 서버, DB를 퍼블릭 노출 없이 연결할 때
+- 고정 IP 없이도 팀원 간 개발 환경을 빠르게 공유할 때
+
+Tailscale은 네트워크를 크게 바꾸지 않고도 "바로 쓸 수 있는 사설망"을
+만들어주는 도구입니다. 작은 규모에서 시작해도 운영 품질을 올리기 좋습니다.
