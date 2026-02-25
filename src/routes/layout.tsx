@@ -2,7 +2,7 @@ import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Slot } from "@builder.io/qwik";
 import { Link, useLocation } from "@builder.io/qwik-city";
 import { getSupabaseClient } from "../lib/supabase";
-import { PaletteIcon } from "lucide-qwik";
+import { EyeIcon, PaletteIcon, UsersIcon } from "lucide-qwik";
 
 const themes = ["light", "night"];
 const darkThemes = ["night"];
@@ -13,6 +13,8 @@ export default component$(() => {
   }
   const theme = useSignal<string>("night");
   const userEmail = useSignal<string | null>(null);
+  const dailyViewCount = useSignal<number | null>(null);
+  const totalViewCount = useSignal<number | null>(null);
   const lastTrackedPath = useSignal<string | null>(null);
   const location = useLocation();
   const baseUrl = import.meta.env.BASE_URL;
@@ -57,6 +59,24 @@ export default component$(() => {
     const supabase = getSupabaseClient();
     supabase.auth.signOut();
   });
+  const syncTotalViewCount = $(async () => {
+    const supabase = getSupabaseClient();
+    const { data, error } = await supabase
+      .from("blog_daily_views")
+      .select("view_count");
+    if (error) {
+      console.warn("[analytics] blog_daily_views select error", error);
+      return;
+    }
+    totalViewCount.value = (data ?? []).reduce((sum, row) => {
+      const count =
+        typeof row.view_count === "number"
+          ? row.view_count
+          : Number(row.view_count);
+      return sum + (Number.isFinite(count) ? count : 0);
+    }, 0);
+  });
+
   const trackDailyView = $(async () => {
     const pathname = location.url.pathname;
     if (lastTrackedPath.value === pathname) {
@@ -64,10 +84,18 @@ export default component$(() => {
     }
     lastTrackedPath.value = pathname;
     const supabase = getSupabaseClient();
-    const { error } = await supabase.rpc("increment_blog_daily_view");
+    const { data, error } = await supabase.rpc("increment_blog_daily_view");
     if (error) {
       console.warn("[analytics] increment_blog_daily_view error", error);
+      return;
     }
+    if (typeof data === "number") {
+      dailyViewCount.value = data;
+    } else if (typeof data === "string") {
+      const parsed = Number(data);
+      dailyViewCount.value = Number.isFinite(parsed) ? parsed : null;
+    }
+    await syncTotalViewCount();
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -191,6 +219,29 @@ export default component$(() => {
                 </Link>
               </li>
             </ul>
+            <div class="order-last flex w-full items-center justify-center gap-2 rounded-full border border-base-content/20 px-3 py-1 text-xs text-base-content/70 sm:order-none sm:w-auto">
+              <span class="inline-flex items-center gap-1 whitespace-nowrap">
+                <EyeIcon class="h-3.5 w-3.5" />
+                <span class="hidden md:inline">오늘 방문자 수</span>
+                <span class="md:hidden">오늘</span>
+                <span class="tabular-nums">
+                  {dailyViewCount.value === null
+                    ? "-"
+                    : `${dailyViewCount.value.toLocaleString("ko-KR")}명`}
+                </span>
+              </span>
+              <span class="text-base-content/40">/</span>
+              <span class="inline-flex items-center gap-1 whitespace-nowrap">
+                <UsersIcon class="h-3.5 w-3.5" />
+                <span class="hidden md:inline">전체 방문자 수</span>
+                <span class="md:hidden">전체</span>
+                <span class="tabular-nums">
+                  {totalViewCount.value === null
+                    ? "-"
+                    : `${totalViewCount.value.toLocaleString("ko-KR")}명`}
+                </span>
+              </span>
+            </div>
             <div class="auth">
               {userEmail.value ? (
                 <button type="button" class="auth-button" onClick$={signOut}>

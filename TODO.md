@@ -5,8 +5,8 @@
 
 ## SEO
 ## Supabase
-- [ ] Finalize schema for post views and comments
-- [ ] Decide auth strategy (anonymous vs login) and moderation rules
+- [x] Finalize schema for post views and comments
+- [x] Decide auth strategy (anonymous vs login) and moderation rules
 - [ ] Implement read/write API integration with rate limiting
 
 ## Automator
