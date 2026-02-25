@@ -1,6 +1,6 @@
-﻿import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Slot } from "@builder.io/qwik";
-import { Link } from "@builder.io/qwik-city";
+import { Link, useLocation } from "@builder.io/qwik-city";
 import { getSupabaseClient } from "../lib/supabase";
 import { PaletteIcon } from "lucide-qwik";
 
@@ -13,6 +13,8 @@ export default component$(() => {
   }
   const theme = useSignal<string>("night");
   const userEmail = useSignal<string | null>(null);
+  const lastTrackedPath = useSignal<string | null>(null);
+  const location = useLocation();
   const baseUrl = import.meta.env.BASE_URL;
 
   const applyTheme = $((value: string) => {
@@ -54,6 +56,18 @@ export default component$(() => {
   const signOut = $(() => {
     const supabase = getSupabaseClient();
     supabase.auth.signOut();
+  });
+  const trackDailyView = $(async () => {
+    const pathname = location.url.pathname;
+    if (lastTrackedPath.value === pathname) {
+      return;
+    }
+    lastTrackedPath.value = pathname;
+    const supabase = getSupabaseClient();
+    const { error } = await supabase.rpc("increment_blog_daily_view");
+    if (error) {
+      console.warn("[analytics] increment_blog_daily_view error", error);
+    }
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -131,6 +145,12 @@ export default component$(() => {
     return () => {
       subscription.subscription.unsubscribe();
     };
+  });
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ track }) => {
+    track(() => location.url.pathname);
+    void trackDailyView();
   });
 
   return (
@@ -233,3 +253,4 @@ export default component$(() => {
     </div>
   );
 });
+

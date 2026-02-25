@@ -1,19 +1,9 @@
 # TODO (2026-02-19)
 
-## Immediate
-- [x] Resolve `useVisibleTask$` lint warnings in `src/routes/layout.tsx:59`, `src/routes/layout.tsx:67`, `src/routes/workouts/index.tsx:84`
-- [x] Add test setup and `test` script in `package.json` (Node `node:test` + `tests/smoke.test.js`)
-
 ## Content & Navigation
-- [x] Add search and tag/category filtering for posts
-- [x] Add stable pagination with page URLs
 - [ ] Ensure post listing stays consistent with MDX frontmatter ordering/fallback rules
 
 ## SEO
-- [x] Add `sitemap.xml` generation
-- [x] Confirm `robots.txt` policy is production-ready
-- [x] Add/verify custom 404 route in QwikCity
-
 ## Supabase
 - [ ] Finalize schema for post views and comments
 - [ ] Decide auth strategy (anonymous vs login) and moderation rules
