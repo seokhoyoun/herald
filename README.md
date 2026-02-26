@@ -48,6 +48,20 @@ npm start # or `yarn start`
 
 > Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
 
+### Access from Tailscale
+
+`npm start` is already configured to bind to all interfaces (including `tailscale0`):
+
+```shell
+npm start
+```
+
+Then open the app from another Tailnet device:
+
+```text
+http://<this-machine-tailscale-ip>:5173
+```
+
 ## Supabase (Local)
 
 1. Install Docker Desktop (WSL integration enabled) and Supabase CLI.
@@ -70,7 +84,11 @@ VITE_SUPABASE_URL=http://127.0.0.1:54321
 VITE_SUPABASE_ANON_KEY=<anon key from supabase status>
 ```
 
-5. Run the app:
+5. If you access the app from Tailscale or another host, add that exact origin to auth redirect allow-lists.
+- Local Supabase: `supabase/config.toml` -> `[auth].additional_redirect_urls`
+- Hosted Supabase: Dashboard -> Authentication -> URL Configuration -> Redirect URLs
+
+6. Run the app:
 
 ```shell
 npm run dev

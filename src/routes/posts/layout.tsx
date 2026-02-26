@@ -75,7 +75,6 @@ export default component$(() => {
       .from("post_comments")
       .select("id, author_name, body, created_at")
       .eq("post_slug", postSlug)
-      .eq("status", "approved")
       .order("created_at", { ascending: false });
     if (fetchError) {
       comments.value = [];
@@ -116,10 +115,13 @@ export default component$(() => {
     });
 
     if (insertError) {
-      error.value = `댓글 등록 실패: ${insertError.message}`;
+      const code = insertError.code ? ` (${insertError.code})` : "";
+      const details = insertError.details ? ` / ${insertError.details}` : "";
+      const hint = insertError.hint ? ` / hint: ${insertError.hint}` : "";
+      error.value = `댓글 등록 실패: ${insertError.message}${code}${details}${hint}`;
     } else {
       body.value = "";
-      notice.value = "댓글이 등록되었습니다. 승인 후 노출됩니다.";
+      notice.value = "댓글이 등록되었습니다.";
       await loadComments();
     }
     isSaving.value = false;
@@ -171,7 +173,7 @@ export default component$(() => {
             <p class="mt-6 text-sm text-base-content/60">댓글을 불러오는 중입니다.</p>
           ) : comments.value.length === 0 ? (
             <p class="mt-6 text-sm text-base-content/60">
-              아직 승인된 댓글이 없습니다. 첫 댓글을 남겨보세요.
+              아직 댓글이 없습니다. 첫 댓글을 남겨보세요.
             </p>
           ) : (
             <div class="mt-6 grid gap-4">
@@ -196,7 +198,11 @@ export default component$(() => {
             </div>
           )}
 
-          <form class="mt-8 border-t border-base-content/10 pt-6" onSubmit$={submitComment}>
+          <form
+            class="mt-8 border-t border-base-content/10 pt-6"
+            preventdefault:submit
+            onSubmit$={submitComment}
+          >
             {userId.value ? (
               <p class="text-sm text-base-content/60">
                 로그인 사용자로 댓글을 남깁니다.

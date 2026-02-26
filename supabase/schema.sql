@@ -30,7 +30,7 @@ create table if not exists post_comments (
   author_id uuid not null,
   author_name text null,
   body text not null,
-  status comment_status not null default 'pending',
+  status comment_status not null default 'approved',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -61,7 +61,9 @@ begin
 end;
 $$;
 
-create or replace function increment_blog_daily_view(p_view_date date default current_date)
+create or replace function increment_blog_daily_view(
+  p_view_date date default (timezone('Asia/Seoul', now())::date)
+)
 returns bigint
 language plpgsql
 security definer
@@ -140,12 +142,12 @@ begin
     from pg_policies
     where schemaname = 'public'
       and tablename = 'post_comments'
-      and policyname = 'post_comments_insert_pending'
+      and policyname = 'post_comments_insert_approved'
   ) then
-    create policy "post_comments_insert_pending" on post_comments
+    create policy "post_comments_insert_approved" on post_comments
       for insert with check (
         auth.uid() = author_id
-        and status = 'pending'
+        and status = 'approved'
       );
   end if;
 end;
