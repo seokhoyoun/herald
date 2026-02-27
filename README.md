@@ -1,146 +1,109 @@
-# Qwik City App ⚡️
+# Herald
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+Herald는 Qwik 기반 개인 기록 블로그입니다.  
+기술 글(MDX), 댓글, 방문자 집계, 운동일지 같은 개인 데이터 기록 기능을 Supabase와 함께 운영합니다.
 
----
+## 핵심 기능
 
-## Project Structure
+- MDX 기반 포스트 작성 및 자동 목록화 (`src/routes/posts/*/index.mdx`)
+- 홈에서 포스트 검색/카테고리/태그 필터/페이지네이션
+- Supabase Auth(Google OAuth) 로그인
+- 포스트 댓글 조회/등록
+- 일간 방문자 수(Asia/Seoul 기준) 및 누적 방문자 수 표시
+- 운동일지 조회/등록 (`/workouts`)
+- 에세이/노트/소개 페이지 라우팅
 
-This project is using Qwik with [QwikCity](https://qwik.dev/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
+## 기술 스택
 
-Inside your project, you'll see the following directory structure:
+- Frontend: Qwik + QwikCity + TypeScript + Tailwind CSS + DaisyUI
+- Backend(BaaS): Supabase (Auth, Postgres, RLS, RPC)
+- Content: MDX (frontmatter 메타데이터 기반)
+- Test: Node 내장 test runner (`node:test`)
 
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
-```
+## 시작하기
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.dev/qwikcity/routing/overview/) for more info.
+### 1) 요구사항
 
-- `src/components`: Recommended directory for components.
+- Node.js: `^18.17.0 || ^20.3.0 || >=21.0.0`
+- (선택) 로컬 Supabase 실행 시 Docker + Supabase CLI
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
+### 2) 설치
 
-## Add Integrations and deployment
-
-Use the `npm run qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.dev/qwikcity/guides/static-site-generation/).
-
-```shell
-npm run qwik add # or `yarn qwik add`
+```bash
+npm install
 ```
 
-## Development
+### 3) 환경 변수
 
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
+`.env.local` 파일을 만들고 값을 설정합니다.
 
-```shell
-npm start # or `yarn start`
+```env
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 ```
 
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
-
-### Access from Tailscale
-
-`npm start` is already configured to bind to all interfaces (including `tailscale0`):
-
-```shell
-npm start
-```
-
-Then open the app from another Tailnet device:
-
-```text
-http://<this-machine-tailscale-ip>:5173
-```
-
-## Supabase (Local)
-
-1. Install Docker Desktop (WSL integration enabled) and Supabase CLI.
-2. Start local Supabase services:
-
-```shell
-npm run supabase:start
-```
-
-3. Check local connection values:
-
-```shell
-npm run supabase:status
-```
-
-4. Set `.env.local` with local values:
+로컬 Supabase 예시:
 
 ```env
 VITE_SUPABASE_URL=http://127.0.0.1:54321
-VITE_SUPABASE_ANON_KEY=<anon key from supabase status>
+VITE_SUPABASE_ANON_KEY=<anon key from `supabase status`>
 ```
 
-5. If you access the app from Tailscale or another host, add that exact origin to auth redirect allow-lists.
-- Local Supabase: `supabase/config.toml` -> `[auth].additional_redirect_urls`
-- Hosted Supabase: Dashboard -> Authentication -> URL Configuration -> Redirect URLs
+### 4) 개발 서버 실행
 
-6. Run the app:
-
-```shell
+```bash
 npm run dev
 ```
 
-Useful commands:
+Tailscale 등 외부 디바이스에서 접속하려면:
 
-```shell
+```bash
+npm start
+```
+
+기본 포트는 `5173`입니다.
+
+## 자주 쓰는 명령어
+
+- `npm run dev`: SSR 개발 서버 실행
+- `npm start`: `0.0.0.0:5173`으로 개발 서버 실행 (원격 접속용)
+- `npm run build`: 프로덕션 빌드
+- `npm run preview`: 빌드 결과 프리뷰
+- `npm run build.types`: 타입 체크
+- `npm run lint`: ESLint 검사
+- `npm run fmt` / `npm run fmt.check`: 포맷 적용 / 검사
+- `npm test`: 테스트 실행
+
+## Supabase 로컬 개발
+
+```bash
+npm run supabase:start
+npm run supabase:status
+```
+
+필요 시 초기화/중지:
+
+```bash
 npm run supabase:db:reset
 npm run supabase:stop
 ```
 
-## Preview
+스키마와 마이그레이션은 `supabase/` 디렉터리에서 관리합니다.
 
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
+## 디렉터리 구조
 
-```shell
-npm run preview # or `yarn preview`
+```text
+src/
+  routes/        # QwikCity 라우트 및 페이지
+  components/    # 공통 컴포넌트
+  data/          # 포스트 메타데이터 로딩 유틸
+  lib/           # Supabase 클라이언트 등
+supabase/        # 로컬 DB 스키마/마이그레이션
+automator/       # .NET 기반 포스트 자동 생성 워커(선택)
+tests/           # node:test 기반 테스트
 ```
 
-## Production
+## Automator (선택)
 
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
-
-```shell
-npm run build # or `yarn build`
-```
-
-## Static Site Generator (Node.js)
-
-Be sure to configure your server to serve very long cache headers for the `build/**/*.js` files.
-
-Typically you'd set the `Cache-Control` header for those files to `public, max-age=31536000, immutable`.
-
-```shell
-npm run build.server
-```
-
-## Testing
-
-This project uses Node's built-in `node:test` runner.
-
-```shell
-npm test
-```
-
-## Static Site Generator (Node.js)
-
-Be sure to configure your server to serve very long cache headers for the `build/**/*.js` files.
-
-Typically you'd set the `Cache-Control` header for those files to `public, max-age=31536000, immutable`.
-
-```shell
-npm run build.server
-```
+`automator/Herald.Automator`는 AI 기반으로 MDX 포스트를 생성해 `src/routes/posts/...`에 반영하는 별도 워커입니다.  
+상세 내용은 `automator/Herald.Automator/README.md`를 참고하세요.

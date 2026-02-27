@@ -1,6 +1,6 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { Slot } from "@builder.io/qwik";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import { Link } from "@builder.io/qwik-city";
 import { getSupabaseClient } from "../lib/supabase";
 import { EyeIcon, PaletteIcon, UsersIcon } from "lucide-qwik";
 
@@ -28,7 +28,6 @@ export default component$(() => {
   const authContinueUrl = useSignal<string | null>(null);
   const dailyViewCount = useSignal<number | null>(null);
   const totalViewCount = useSignal<number | null>(null);
-  const location = useLocation();
   const baseUrl = import.meta.env.BASE_URL;
 
   const applyTheme = $((value: string) => {
